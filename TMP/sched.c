@@ -54,10 +54,6 @@ int reverseinsert(int proc, int head, int key) {
 }
 
 void clearqueue() {
-	int i = 0;
-	for (; i < NPROC; ++i) {
-		if ((&proctab[i])->pstate == PRREADY) {
-			dequeue(i);
-		}
-	}
+	q[rdyhead].qnext = rdytail;
+	q[rdytail].qprev = rdyhead;
 }
