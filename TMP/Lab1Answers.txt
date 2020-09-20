@@ -1,0 +1,27 @@
+Q1: What are the advantages and disadvantages of each of the two scheduling policies? Also, give the advantages and disadvantages of the round robin scheduling policy originally implemented in Xinu.
+Ans: 
+The advantage of the Exponential Distribution Scheduler is that it will not cause starvation for processes that has low priorities because it take sampling using exponential distribution to generate a random priority, meaning that all processes have the probability to get chance running.
+
+The disadvantage of the Exponential Distribution Scheduler is that, when scheduling, it takes time to generate a pseudorandom number, because in our implementation, we have to execute sampling, compute logarithm and compute power operation. In addition, the scheduler is unfair not only because the probability for each process to run is unequal,
+but also the running probabilities of the processes with lower priorities are much greater than those of the processes with higher priorities.
+
+The advantage of the Linux-like Scheduler is that it will not cause much starvation for processes, since in each epoch, every runnable process can get chance running until it becomes non-runnable or uses up its time quantum.
+
+The disadvantage of the Linux-like Scheduler is that, during each epoch, the problem of starvation still exsits, because the processes with lower goodness values cannot run until the processes with higher goodness values use up their time quantums or yields the CPU time. Also, the time quantum for each process is unequal. In addition, the NULL
+process has to run and use up the current epoch if there is no runnable user process until the next epoch begins.
+
+The advantage of the round robin scheduling process in XINU is that it is easy to implement and it will not execute the context switch if there is no process in the ready process queue with a priority greater that of the PRCURR process. It also can ensure order of execution for processes with equal priorities is different if context switch does
+occur.
+
+The disadvantage of the round rogin scheduling process in XINU is that it will case starvation for processes of which the priorities are less than the priority of the current process. In this case, they will never run if the current process keeps running.
+
+
+Q2: Describe the way each of the schedulers affects the NULL process.
+Ans:
+In the Exponential Distribution Scheduler, the NULL process will be inserted into the ready process queue when it create and resume the main process after it set its state to PRREADY. If there are other user process running of which the priorioty is greater than 0, the NULL process will never be polled from the ready process queue and run. 
+When all user processes finish execution by returning without shutting down the system, the NULL process will be polled from the ready process queue and then run. At this time, the XINU operating system can be still running. In addition, the NULL process will run for the purpose of handling both system calls and timer interrupts (e.g. context 
+switch).
+
+In the Linux-like Scheduler, the NULL process will also be inserted into the ready proces queue when the system is initialized. During each epoch, if the current epoch still has time while all user processes cannot be the next process to run (either not in the PRREADY state or having used up its quantum), the NULL process will be polled and
+then run in order to use up the remaining time of the current epoch. When all user processes finish execution without shutting down the system, the NULL process will be the running process in order to make sure the XINU system run. In addition, the NULL process will run for the purpose of handling both system calls and timer interrupts (e.g.
+context switch).
