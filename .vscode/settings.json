@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cmath": "c",
+        "*.tcc": "c",
+        "conf.h": "c",
+        "tty.h": "c"
+    }
+}

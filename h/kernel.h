@@ -173,4 +173,6 @@ DEVCALL write(int descrp, void *buf, int count);
 /*Customized function to shutdown QEUM*/
 int shutdown();
 
+int epoch;
+
 #endif
