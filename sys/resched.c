@@ -69,24 +69,17 @@ int resched()
 		}
 
 		if (epoch <= 0) {
-			clearqueue();
 			if (optr->pstate == PRCURR) {
 				optr->pstate = PRREADY;
 			}
-			
+			clearqueue();
 			epoch = 0;
 			int i;
 			for (i = 0; i < NPROC; ++i) {
 				if ((&proctab[i])->pstate != PRFREE) {
 					struct pentry *tmp = &proctab[i];
-					// if (isfirst == 1 && i == 49) {
-					// 	kprintf("\nmain: counter = %d, prio = %d\n", tmp->counter, tmp->pprio);
-					// }
 					tmp->curprio = tmp->pprio;
 					tmp->counter = tmp->counter / 2 + tmp->curprio;
-					// if (isfirst == 1 && tmp->counter > 0) {
-					// 	kprintf("\npid: %d, counter: %d, state: %d\n", i, tmp->counter, tmp->pstate);
-					// }
 					epoch += tmp->counter;
 					if (i == 0 || tmp->pstate == PRREADY) {
 						int goodness = tmp->counter + tmp->curprio;
@@ -103,9 +96,9 @@ int resched()
 			nptr = (&proctab[currpid]);
 
 			// kprintf("\nnew = %d\n", epoch);
+			// kprintf("\n");
 		} else {
 			// kprintf("\nold = %d\n", epoch);
-
 			if (optr->pstate == PRCURR && optr->counter > 0) {
 				#ifdef RTCLOCK
 					preempt = optr->counter;
