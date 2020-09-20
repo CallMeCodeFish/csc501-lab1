@@ -65,7 +65,7 @@ int main() {
 		}
         kprintf("\n");
 	}
-	shutdown();
+	// shutdown();
 	return 0;
 }
 
